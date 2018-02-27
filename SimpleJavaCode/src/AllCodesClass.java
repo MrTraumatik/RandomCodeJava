@@ -1,8 +1,10 @@
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
+import util.calendrier.Util;
 
 /**
  *
@@ -972,6 +974,90 @@ public class AllCodesClass {
         }
         return tabPos;
     }
+    
+    public static boolean isLeapYear(int year){
+        return ((year%4==0) || (year%400==0) || (year%100!=0)); 
+    }
+    
+    //A quoi sert cette méthode?????
+    public static void printDay(int day){
+        if(day<1||day>31){
+            throw new IllegalArgumentException();
+        }
+        if(day<10){
+            System.out.println("0"+day+"   ");
+        }else{
+            System.out.println(day+"   ");
+        }
+        
+    }
+    
+    public static int firstDayMonth(int month, int year){
+       return Util.firstDayOfMonth(month, year);
+    }
+    
+    
+    public static void afficher(int[][] array, int rows, int col){
+        int[][] tab = new int[rows][col];
+        System.out.println(Arrays.deepToString(tab));
+          
+    }
+    
+    public static int propotionNuls(int[][] tab, int rows, int col){
+        int cpt = 0;
+        for (int i =0;i<rows;i++){
+            for(int j=0;j<col;j++){
+                if(tab[i][j]==0){
+                    cpt=cpt+1;
+            }
+            }
+        }
+        return cpt;
+    }
+
+    public static boolean tousPositif(int[][] tab, int rows, int columns){
+        boolean isPos = false;
+        int lg = 0;
+        int col = 0;
+        
+        while(lg<rows&&!isPos){
+            col = 0;
+            while(col<columns&&!isPos){
+                isPos=tab[lg][col]<0;
+                col = col +1;
+            }
+            lg = lg +1;
+        }
+        
+        return isPos;
+    }
+    
+    public static boolean carreMagique(int[][] tab, int n){
+        int indice1=0;
+        int indice2=0;
+        int sommeC=0;
+        int sommeL=0;
+        int total =0;
+        for(int i=0;i<n-1;i++){
+            total = total + tab[i][0];
+        }
+        boolean isMagic=true;
+        while(indice1<n&&isMagic){
+            indice2=0;
+            while(indice2<n&&isMagic){
+                sommeC=sommeC+tab[indice2][indice1];
+                sommeL=sommeL+tab[indice1][indice2];
+                indice2=indice2+1;
+            }
+            isMagic=sommeL==total && sommeC==total;
+            sommeC=0;
+            sommeL=0;
+            indice1=indice1+1;
+        }
+        return isMagic; 
+    }
+    
+    
 
     public static void main(String[] args) {
         System.out.println((Math.random() * 5) + 1);
@@ -1263,6 +1349,40 @@ public class AllCodesClass {
         for (int i = 0; i < inverse.length - 1; i++) {
             System.out.println(inverse[i]);
         }
+        
+        
+        System.out.print("entrer le mois puis l'année: ");
+        int monthN = sc.nextInt();
+        int year = sc.nextInt();
+        String[] month = {
+            "","JANVIER ","FEVRIER","MARS","AVRIL","MAI","JUIN","JUILLET",
+            "AOUT","SEPTEMBRE","OCTOBRE","NOVEMBRE","DECEMBRE"
+        };
+        int fdom = firstDayMonth(monthN, year);     
+        
+        //+simple et +court que la méthode daysInMonth...
+        int[] days = {
+            0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
+        };
+        
+        //Header 
+        System.out.println("===========================");
+        System.out.println( month[monthN]+"  "+ year);
+        System.out.println("===========================");
+        
+        System.out.println(" MON TUE WED THU FRI SAT SUN");
+
+        //affichage des dates en format calendrier
+        for (int i = 0; i < fdom; i++)
+            System.out.print("    ");
+        for (int i = 1; i <= days[monthN]; i++) {
+            System.out.printf("% 4d", i);
+            if (((i + fdom) % 7 == 0) || (i == days[monthN])) System.out.println();
+        }
+        
+     
+        
+        
     }
 
 }
